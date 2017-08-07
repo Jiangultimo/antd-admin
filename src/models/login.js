@@ -1,18 +1,13 @@
-import {login} from '../services/login';
-import {routeRedux} from 'dva/router';
-import DoPromise from '../utils/dopromise';
-
-console.log(login);
+import {routerRedux} from 'dva/router';
+const Login = require('../services/login');
 
 export default {
     namespace: 'login',
     state: {},
     effects: {
-        *login({payload}, {call, put}) {
-            console.log(login);
-            const data =  yield call(, payload);
-            console.log(data);
-            yield put(routeRedux.push('/article'));
+        * login({payload}, {call, put}) {
+            const data =  yield call( Login, payload);
+            yield put(routerRedux.push('/article'));
         }
     }
 }

@@ -12,7 +12,7 @@ class Slider extends React.Component {
     }
 
     render(){
-        render(
+        return(
             <Menu
                 onClick={this.handleClick}
                 style={{width: 240}}

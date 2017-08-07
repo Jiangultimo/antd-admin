@@ -16,8 +16,13 @@ class NormalLoginFrom extends React.Component{
         console.log(browserHistory);
         this.props.form.validateFields((err,values) => {
             if(!err) {
-                console.log('Received values of form', values);
-                this.props.dispatch({type:'login/login', values});
+                var params = {
+                    url:'',
+                    data: values,
+                    methos: 'POST'
+                }
+                console.log('Received values of form', params);
+                this.props.dispatch({type:'login/login', payload:params});
             }
         });
     }

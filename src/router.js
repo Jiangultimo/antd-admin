@@ -12,26 +12,46 @@ const registerModel = (app, model) => {
 
 const Routers = function({history, app}) {
     const routes = [{
-        path:'/',
-        component: Login,
-        getIndexRoute(nextState, cb){
+        path: '/',
+        name: '文章管理',
+        getComponent(nextState, cb){
             require.ensure([], (require) => {
                 registerModel(app, require('./models/login'));
-                cb(null, {component: require('./routes/Login')})
-            }, 'login')
-        },
-        childRoutes:[
-            {
-                path:'/article',
-                getComponent(nextState, cb){
-                    require.ensure([], (require) => {
-                        // registerModel(app, require())
-                        cb(null, require('./routes/Article'))
-                    }, 'article')
-                }
-            }
-        ]
-    }]
+                cb(null, require('./routes/Login'));
+            });
+        }
+    },{
+        path: '/article',
+        name:'文章管理',
+        getComponent(nextState, cb){
+            require.ensure([], (require) => {
+                registerModel(app, require('./models/article'));
+                cb(null, require('./routes/Article'));
+            })
+        }
+    }];
+    // const routes = [{
+    //     path:'/',
+    //     component: Login,
+    //     name:'文章管理',
+    //     getIndexRoute(nextState, cb){
+    //         require.ensure([], (require) => {
+    //             registerModel(app, require('./models/login'));
+    //             cb(null, {component: require('./routes/Login')})
+    //         }, 'login')
+    //     },
+    //     childRoutes:[
+    //         {
+    //             path:'article',
+    //             getComponent(nextState, cb){
+    //                 require.ensure([], (require) => {
+    //                     registerModel(app, require('./models/article'))
+    //                     cb(null, require('./routes/Article'))
+    //                 }, 'article')
+    //             }
+    //         }
+    //     ]
+    // }]
     return <Router history={history} routes={routes} />
 };
 
