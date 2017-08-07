@@ -4,18 +4,19 @@ import IndexPage from './routes/IndexPage';
 import Login from './routes/Login';
 import Article from './routes/Article'
 
-//const registerModel = (app, model) => {
-//    if(!(app._models.filter(m => m.namespace === model.namespace).length === 1)) {
-//        app.model(model);
-//    }
-//}
+const registerModel = (app, model) => {
+   if(!(app._models.filter(m => m.namespace === model.namespace).length === 1)) {
+       app.model(model);
+   }
+}
 
 const Routers = function({history, app}) {
     const routes = [{
         path:'/',
         component: Login,
-        getLoginRoute(nextState, cb){
+        getIndexRoute(nextState, cb){
             require.ensure([], (require) => {
+                registerModel(app, require('./models/login'));
                 cb(null, {component: require('./routes/Login')})
             }, 'login')
         },

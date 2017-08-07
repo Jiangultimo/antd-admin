@@ -17,15 +17,7 @@ class NormalLoginFrom extends React.Component{
         this.props.form.validateFields((err,values) => {
             if(!err) {
                 console.log('Received values of form', values);
-                const url = '/article';
-                const data = values;
-                const method = 'POST';
-                DoPromise(url, data, method).then( (data) => {
-                    console.log('success');
-                    browserHistory.push('/article');
-                }).catch( (error) => {
-                    console.log('error');
-                })
+                this.props.dispatch({type:'login/login', values});
             }
         });
     }
@@ -71,4 +63,4 @@ class NormalLoginFrom extends React.Component{
 }
 
 const WrapperNormalLoginForm = Form.create()(NormalLoginFrom);
-export default WrapperNormalLoginForm;
+export default connect()(WrapperNormalLoginForm);
