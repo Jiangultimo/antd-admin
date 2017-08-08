@@ -1,6 +1,5 @@
 import React from 'react';
 import { Router, Route, IndexRoute } from 'dva/router';
-import IndexPage from './routes/IndexPage';
 import Login from './routes/Login';
 import Article from './routes/Article'
 

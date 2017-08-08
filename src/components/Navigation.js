@@ -1,4 +1,5 @@
 import {Menu, Icon} from 'antd';
+import navStyle from '../style/navigation.css';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
@@ -7,7 +8,7 @@ class Slider extends React.Component {
         super();
     }
 
-    handleClick() {
+    handleClick(e) {
         console.log('click', e);
     }
 
@@ -15,14 +16,15 @@ class Slider extends React.Component {
         return(
             <Menu
                 onClick={this.handleClick}
-                style={{width: 240}}
-                defaultSelectedKeys={['1']}
-                defaultOpenKeys={['sub1']}
+                style={{width: '20%'}}
+                defaultSelectedKeys={['article']}
                 mode='inline'
+                className={navStyle.nav__container}
                 >
-                    <SubMenu Key="sub1" title={<span><Icon type="mail" /><span>文章管理</span></span>}>
-                        <Menu.Item key="1">文章管理</Menu.Item>
-                    </SubMenu>
+                    <Menu.Item key="article">
+                        <Icon type="book" />
+                        <span>文章管理</span>
+                    </Menu.Item>
             </Menu>
         );
     }

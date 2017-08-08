@@ -1,0 +1,26 @@
+.article__container{
+    width: 100%;
+    display: block;
+}
+.custom__filter__dropdown{
+    padding: 8px;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow:0 1px 6px rgba(0,0,0,.2);
+}
+.custom__filter__dropdown input{
+    width: 130px;
+    margin-right: 8px;
+}
+.highlight{
+    color: #ff3c00;
+}
+.article_list__container{
+    padding:10px;
+    width: 80%;
+    float:right!important;
+}
+.article__search{
+    width: 100%;
+    padding: 15px 0;
+}
