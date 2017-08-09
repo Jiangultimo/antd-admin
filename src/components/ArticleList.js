@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'dva';
-import {Table, Input, Button, Icon} from 'antd';
+import {Table, Input, Button, Icon, Select} from 'antd';
 import articleStyle from '../style/article.css';
+import DoPromise from '../utils/dopromise';
 
 const {Column, ColumnGroup} = Table;
+const Option = Select.Option;
 const Search = Input.Search;
 const data = [{
   key: '1',
@@ -19,128 +21,45 @@ const data = [{
   time: 2222
 }];
 
-// class ArticleList extends React.Component {
-//     constructor() {
-//         super();
-//         this.state = {
-//             filterDropdownVisible: false,
-//             data,
-//             searchText: '',
-//             filtered: false
-//         }
-//     }
-//
-//     onInputChange = (e) => {
-//         this.setState({
-//             searchText: e.target.value
-//         });
-//     }
-//
-//     onSearch = () => {
-//         const {searchText} = this.state;
-//         const reg = new RegExp(searchText, 'gi');
-//         this.setState({
-//             filterDropdownVisible: false,
-//             filtered: !!searchText,
-//             data: data.map((record) => {
-//                 const match = record.name.match(reg);
-//                 console.log(match);
-//                 if(!match) {
-//                     return null;
-//                 }
-//                 return {
-//                     ...record,
-//                     name: (
-//                         <span>
-//                             {record.name.split(reg).map( (text,i) => {
-//                                 i > 0 ? [<span className={articleStyle.highlight}>{match[0]}</span>, text] : text
-//                             })}
-//                         </span>
-//                     )
-//                 };
-//             }).filter(record => !!record)
-//         })
-//     }
-//
-//     render() {
-//         const columns = [{
-//             title: '公众号',
-//             dataIndex: 'name',
-//             key: 'name',
-//             filterDropdown: (
-//                 <div className={articleStyle.custom__filter__dropdown}>
-//                     <Input
-//                         ref={ele => this.searchInput = ele}
-//                         placeholder="搜索公众号"
-//                         value={this.state.searchText}
-//                         onChange={this.onInputChange}
-//                         onPressEnter={this.onSearch}
-//                     />
-//                     <Button type="primary" onClick={this.onSearch}>搜索</Button>
-//                 </div>
-//             ),
-//             filterIcon: <Icon type="search" style={{ color: this.state.filtered ? '#108ee9' : '#aaa' }} />,
-//             filterDropdownVisible: this.state.filterDropdownVisible,
-//             onFilterDropdownVisibleChange: (visible) => {
-//                 this.setState({
-//                     filterDropdownVisible: visible,
-//                 }, () => this.searchInput.focus());
-//             },
-//         }, {
-//             title: '文章标题',
-//             dataIndex: 'title',
-//             key: 'title',
-//             // filterDropdown: (
-//             //     <div className={articleStyle.custom__filter__dropdown}>
-//             //         <Input
-//             //             ref={ele => this.searchInput = ele}
-//             //             placeholder="搜索文章标题"
-//             //             value={this.state.searchText}
-//             //             onChange={this.onInputChange}
-//             //             onPressEnter={this.onSearch}
-//             //         />
-//             //         <Button type="primary" onClick={this.onSearch}>搜索</Button>
-//             //     </div>
-//             // ),
-//             // filterIcon: <Icon type="search" style={{color : this.state.filtered ? '#108ee9' : '#aaa'}} />,
-//             // filterDropdownVisible: this.state.filterDropdownVisible,
-//             // onFilterDropdownVisibleChange: (visible) => {
-//             //     this.setState({
-//             //         filterDropdownVisible:visible
-//             //     }, () => this.searchInput.focus());
-//             // }
-//         }, {
-//             title: '摘要',
-//             dataIndex: 'summary',
-//             key: 'summary'
-//         },{
-//             title: '时间',
-//             dataIndex:'time',
-//             key: 'time'
-//         }];
-//         return <Table className={articleStyle.article_list__container} columns={columns} dataSource={this.state.data} />;
-//     }
-// }
-
 class ArticleList extends React.Component{
     constructor(){
         super();
+        this.state = {
+            key:'',
+            value:'',
+            data: data
+        }
     }
-    onSearch(value) {
-        console.log('click', value);
+    onSearch = (value) => {
+        DoPromise('/', {key:this.state.key, value: value}, 'GET').then( data => {
+            this.setState({
+                data: data
+            });
+        }).catch( error => {
+                console.log(error);
+        })
+    }
+    handleChange = (key) => {
+        this.setState({
+            key:key
+        })
     }
     render(){
         return (
             <div className={articleStyle.article_list__container}>
+                <Select defaultValue="offical" onChange={this.handleChange}>
+                    <Option value="offical">公众号</Option>
+                    <Option value="title">标题</Option>
+                    <Option value="summary">摘要</Option>
+                </Select>
                 <div className={articleStyle.article__search}>
                     <Search
                         placeholder="请输入搜索内容"
                         style={{width:250}}
-                        onSearch={this.onSearch(value)}
-                        onPressEnter={this.onSearch}
+                        onSearch={value => this.onSearch(value)}
                     />
                 </div>
-                <Table dataSource={data}>
+                <Table dataSource={this.state.data}>
                     <Column
                         title="公众号"
                         dataIndex="offical"
