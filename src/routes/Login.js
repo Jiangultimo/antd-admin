@@ -19,7 +19,7 @@ class NormalLoginFrom extends React.Component{
                 var params = {
                     url:'',
                     data: values,
-                    methos: 'POST'
+                    method: 'POST'
                 }
                 console.log('Received values of form', params);
                 this.props.dispatch({type:'login/login', payload:params});
